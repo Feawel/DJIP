@@ -1,30 +1,16 @@
 [global]
-ApplicationName=DJIP
+ApplicationName=djip
 AwsCredentialFile=/Users/jonathan/.elasticbeanstalk/aws_credential_file
 DevToolsEndpoint=git.elasticbeanstalk.eu-west-1.amazonaws.com
-EnvironmentName=DJIP-env
+EnvironmentName=djip-env
 EnvironmentTier=WebServer::Standard::1.0
-EnvironmentType=SingleInstance
+EnvironmentType=LoadBalanced
 InstanceProfileName=aws-elasticbeanstalk-ec2-role
 OptionSettingFile=/Users/jonathan/Sites/WikiActu/.elasticbeanstalk/optionsettings.DJIP-env
 RdsDeletionPolicy=Snapshot
 RdsEnabled=Yes
-RdsSourceSnapshotName=
+RdsSourceSnapshotName=awseb-e-vreqctzifn-stack-snapshot-awsebrdsdatabase-1baug16tc6uuv
 Region=eu-west-1
 ServiceEndpoint=https://elasticbeanstalk.eu-west-1.amazonaws.com
 SolutionStack=64bit Amazon Linux 2013.09 running PHP 5.5
-
-[branches]
-master=DJIP-master-env
-
-[branch:master]
-ApplicationVersionName=Sample Application
-EnvironmentName=DJIP-master-env
-EnvironmentTier=WebServer::Standard::1.0
-EnvironmentType=SingleInstance
-InstanceProfileName=aws-elasticbeanstalk-ec2-role
-OptionSettingFile=/Users/jonathan/Sites/WikiActu/.elasticbeanstalk/optionsettings.DJIP-master-env
-RdsDeletionPolicy=Snapshot
-RdsEnabled=Yes
-RdsSourceSnapshotName=
 

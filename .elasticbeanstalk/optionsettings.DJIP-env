@@ -11,6 +11,8 @@ InstanceType=t1.micro
 RollingUpdateEnabled=false
 
 [aws:ec2:vpc]
+ELBScheme=public
+ELBSubnets=
 Subnets=
 VPCId=
 
@@ -47,6 +49,6 @@ Notification Protocol=email
 DBDeletionPolicy=Snapshot
 DBEngine=mysql
 DBInstanceClass=db.t1.micro
-DBSnapshotIdentifier=
+DBSnapshotIdentifier=awseb-e-vreqctzifn-stack-snapshot-awsebrdsdatabase-1baug16tc6uuv
 DBUser=ebroot
 
