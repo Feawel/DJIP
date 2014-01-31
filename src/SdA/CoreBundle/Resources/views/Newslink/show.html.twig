@@ -1,0 +1,10 @@
+
+   <div>
+   <span style="margin-left: 5px;color:black;font-family:Times new Roman" class="newslink-titre">{{ entity.titre }}</span>
+
+    <span style="float: right;position:relative;right:20px;" class="newslink-url"><a href="{{ entity.url }}">{{ entity.url }}</a></span>
+    </div>
+    <a class="btn btn-primary" style="float: left;margin-right: 5px;font-size:7px;" href="{{ path('newslink_edit', { 'id': entity.id }) }}">
+            Editer
+    </a>
+    {{ form(delete_form) }}

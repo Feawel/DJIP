@@ -1,0 +1,12 @@
+# SdA/UserBundle/Resources/config/admin.yml
+services:
+    sonata.admin.user:
+        class: SdA\UserBundle\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Gestion des utilisateurs", label: "Utilisateur" }
+        arguments:
+            - ~
+            - SdA\UserBundle\Entity\User
+            - ~
+        calls:
+            - [ setTranslationDomain, [SdAUserBundle]]

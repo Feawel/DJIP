@@ -1,0 +1,12 @@
+# SdA/CoreBundle/Resources/config/admin.yml
+services:
+    sonata.admin.article:
+        class: SdA\CoreBundle\Admin\ArticleAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Contenu", label: "Article" }
+        arguments:
+            - ~
+            - SdA\CoreBundle\Entity\Article
+            - ~
+        calls:
+            - [ setTranslationDomain, [SdACoreBundle]]

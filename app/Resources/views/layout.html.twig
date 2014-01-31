@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html {% block htmlBackground %} {% endblock htmlBackground %}>
+  <head>
+
+    {{ sonata_seo_title() }}
+    {{ sonata_seo_metadatas() }}
+    
+	<!--[if lt IE 9]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+{% stylesheets
+  'css/component.css'
+  'css/bootstrap.css'
+  'css/bootstrap-responsive.css'
+  'css/bootstrap.icon-large.min.css'
+  'css/master.css'
+  'css/normalize.css'
+  'css/icons.css'
+  'css/side-menu.css'
+
+   filter='cssrewrite, ?yui_css'
+   output='css/compiled/main.css' %}
+  <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+{% endstylesheets %}
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+	{% block stylesheet %} {% endblock stylesheet %}
+
+  </head>
+
+  <body {% block bodyBackground %} {% endblock bodyBackground %}>
+ 
+  	
+<div {% block layout %}id="" {% endblock layout %}>
+
+	  	{% for key, message in app.session.flashbag.all() %}
+	    <div class="flash-notice">
+	        {{ message }}
+	    </div>
+		{% endfor %}
+        <nav  style="background-color:transparent;width:1100px;margin-top:25px;margin-bottom:50px;margin-left:40px;font-size:16px;z-index:9;position:relative">
+    	<ul>
+    	{% block logoDjip %}<li style="float:left;margin-right:50px;position:relative;bottom:15px;"><a href="{{ path('sd_a_core_homepage') }}"><img style="width:100px" alt="Logo de DJIP" src="{{ asset('img/logo_djip.png') }}"></a></li>{% endblock logoDjip %}
+    	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li style="float:left;position:relative;bottom:5px"> <img alt="Profile Picture" src="{% path app.user.profilePicture, 'xsmall' %}"> </li>{% endif %}
+        <li class="dropdown" style="float:left">
+        	<a id="myProfileDropdown" role="button" data-toggle="dropdown" style="text-decoration:none;color:black;margin-right:30px;;margin-left:25px" data-target="#" href="#">
+        		MON PROFILE <b class="caret"></b>
+        	</a>
+	        	<ul id="subMenuProfile" class="dropdown-menu" role="menu" aria-labelledby="myProfileDropdown">
+	                <li><a href="{{ path('fos_user_profile_show') }}"> Voir mon profil</a></li>
+					<li><a href="{{ path('fos_user_profile_edit') }}"> Editer mon profil</a></li>
+					{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}<li><a href="{{ path('fos_user_security_logout') }}"> Se déconnecter</a></li>{% endif %}
+					
+	            </ul>
+        </li>
+        <li  style="float:left;margin-right:30px;"><a style="text-decoration:none;color:black;" href="{{ path('sd_a_core_categorie', { 'categorie' : 'myDjips'}) }}">MES DJIPS</a></li>
+        <li><a id="write-djip" class="btn btn-success" href="#" style="color:black;position:relative;bottom:5px" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Veuillez vous identifier pour pouvoir écrire un DJIP ! :)"  data-original-title="Oops !!" title="">D</a></li>
+		<li style="position:relative;bottom:60px">
+	    	<div class="sb-search sb-search" id="sb-search" style="">
+				<form>
+					<input class="sb-search-input" placeholder="Enter your search term..." type="text" value="" name="search" id="search">
+					<input class="sb-search-submit" type="submit" value="">
+					<span class="sb-icon-search"></span>
+				</form>
+			</div>
+		</li>
+		</ul> 
+
+		</nav>
+		
+		
+    	
+
+		
+			
+			
+
+							  	{% block body %}
+  								{% endblock %}
+
+
+  				
+	<!-- 	
+    <div class="footer" style="width:100%">
+        <p>Example Footer <a href="http://martinbean.co.uk">Jonathan Banon</a> and <a href="http://ryanfait.com/sticky-footer/">Edgard Cattan</a>.</p>
+    </div>
+	 -->
+  			
+
+
+
+	</div><!-- /main -->
+	<div id="djip-box" class="popup_block">
+	</div>	
+	<div id="new-djip-box" class="popup_block">
+	</div>	
+		
+</body>
+
+  	{% javascripts filter='?yui_js'
+	  'js/jquery-1.10.2.min.js'
+	  'js/AnimOnScroll.js'
+	  'js/imagesloaded.pkgd.js'
+	  'js/masonry.pkgd.min.js'
+	  'js/modernizr.custom.js'
+	  'js/classie.js'
+	  'js/sidebarEffects.js'
+	  'js/uisearch.js'
+	  'js/bootstrap.min.js'
+	  output='js/compiled/main.js'
+  	   %}
+
+	  <script type="text/javascript" src="{{ asset_url }}"></script>
+
+	{% endjavascripts %}
+
+	<script>
+
+		//new UISearch( document.getElementById( 'sb-search' ) );
+		new AnimOnScroll( document.getElementById( 'grid' ), {
+			minDuration : 0.4,
+			maxDuration : 0.7,
+			viewportFactor : 0.2
+		} );
+
+		      
+			
+$(function() {	
+	
+/***************************** ANIMATION DJIP HOVER ***************************************/
+	$('.djip-background').hide();
+	$('.djip').hover(function(){
+		
+		$(this).children('.djip-background').slideToggle();
+		$(this).children('.djip-top').slideToggle();
+		$(this).children('.djip-bottom').slideToggle();
+		
+	});
+				
+			
+
+/****************************** APPEL DU DJIP EN AJAX *******************************************/
+
+
+
+	//Lorsque vous cliquez sur un lien de la classe poplight et que le href commence par #
+	$('.djip').click(function() {
+
+		var popID = 'djip-box'; //Trouver la pop-up correspondante
+		var popURL = 'poplight'; //Retrouver la largeur dans le href
+
+		/*Récupérer les variables depuis le lien
+		var query= popURL.split('?');
+		var dim= query[1].split('&amp;');
+		var popWidth = dim[0].split('=')[1]; //La première valeur du lien*/
+
+		//Faire apparaitre la pop-up et ajouter le bouton de fermeture
+		$('#' + popID).fadeIn().css({
+			'width': 900,
+			'z-index' : 100
+		})
+		
+
+		//Récupération du margin, qui permettra de centrer la fenêtre - on ajuste de 80px en conformité avec le CSS
+		var popMargTop = ($('#' + popID).height() + 80) / 2;
+		var popMargLeft = ($('#' + popID).width() + 80) / 2;
+
+
+		
+		//On affecte le margin
+		$('#' + popID).css({
+			'margin-top' : -popMargTop,
+			'margin-left' : -popMargLeft,
+			
+			
+		});
+
+		//Effet box-shadow selon le thème de l'article
+	
+		//Effet fade-in du fond opaque
+		$('body').append('<div id="fade"></div>'); //Ajout du fond opaque noir
+		//Apparition du fond - .css({'filter' : 'alpha(opacity=80)'}) pour corriger les bogues de IE
+		$('#fade').css({'filter' : 'alpha(opacity=80)'}).fadeIn();
+		var id = $(this).attr('id');
+		var DATA = 'id='+id;
+		$.ajax({
+	        type: "POST",
+	        url: "{{ path('sd_a_core_djip')}}",
+	        data: DATA,
+	        cache: false,
+	        success: function(data){
+	           $('#djip-box').html(data).prepend('<a href="#" class="close"><img src="{{ asset('img/close_pop.png') }}" class="btn_close" title="Fermer" alt="Fermer" /></a>');
+	           //$('#djip-box').slideToggle('fast');
+	           //$(".loading").hide();
+	        }
+	    });
+
+		
+		return false;
+	});
+
+
+
+/******************************** ECRIRE UN DJIP *******************************************/
+
+
+
+	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+	//Lorsque vous cliquez sur un lien de la classe poplight et que le href commence par #
+	$('#write-djip').click(function() {
+		
+
+		var popID = 'new-djip-box'; //Trouver la pop-up correspondante
+		var popURL = 'poplight'; //Retrouver la largeur dans le href
+
+		/*Récupérer les variables depuis le lien
+		var query= popURL.split('?');
+		var dim= query[1].split('&amp;');
+		var popWidth = dim[0].split('=')[1]; //La première valeur du lien*/
+
+		//Faire apparaitre la pop-up et ajouter le bouton de fermeture
+		$('#' + popID).fadeIn().css({
+			'width': 600,
+			'z-index' : 100
+		})
+		
+
+		//Récupération du margin, qui permettra de centrer la fenêtre - on ajuste de 80px en conformité avec le CSS
+		var popMargTop = ($('#' + popID).height() + 80) / 2;
+		var popMargLeft = ($('#' + popID).width() + 80) / 2;
+
+
+		
+		//On affecte le margin
+		$('#' + popID).css({
+			'margin-top' : -popMargTop,
+			'margin-left' : -popMargLeft,
+			
+			
+		});
+
+		//Effet box-shadow selon le thème de l'article
+	
+		//Effet fade-in du fond opaque
+		$('body').append('<div id="fade"></div>'); //Ajout du fond opaque noir
+		//Apparition du fond - .css({'filter' : 'alpha(opacity=80)'}) pour corriger les bogues de IE
+		$('#fade').css({'filter' : 'alpha(opacity=80)'}).fadeIn();
+
+		$('#new-djip-box').load( "{{ path('article_new')}}", function() {
+			$('#new-djip-box').prepend('<a href="#" class="close"><img src="{{ asset('img/close_pop.png') }}" class="btn_close" title="Fermer" alt="Fermer" /></a>');;
+		});
+
+
+		
+		return false;
+	});
+	{% else %}
+	$('#write-djip').popover();
+	
+	{% endif %}
+
+	
+	$( document ).on( "click", 'a.close, #fade', function() {
+		$('#fade , .popup_block').fadeOut(function() {
+			$('#fade, a.close').remove();  //...ils disparaissent ensemble
+		});
+		$('#djip-box').html("");
+		$('#new-djip-box').html("");
+		$('.popover').hide();
+		return false;
+		});
+});
+
+		</script>
+
+		{% block js_add %}
+		{% endblock %}
+
+  </html>

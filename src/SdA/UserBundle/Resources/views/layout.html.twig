@@ -1,0 +1,124 @@
+{# src/SdA/UserBundle/Resources/views/layout.html.twig #}
+ 
+{# On étend notre layout #}
+{% extends "::layout.html.twig" %}
+ 
+{# Dans notre layout, il faut d�finir le block body #}
+{% block body %}
+<div>
+ {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+    Connecté en tant que {{ app.user.username }} - <a href="{{ path('fos_user_security_logout') }}">Déconnexion</a>
+{% else %}
+    <a href="{{ path('fos_user_security_login') }}">Connexion</a>
+{% endif %}
+</div>
+  {# On affiche les messages flash que définissent les controleurs du bundle #}
+  {% for key, message in app.session.flashbag.all() %}
+    <div class="alert alert-{{ key }}">
+      {{ message|trans({}, 'FOSUserBundle') }}
+    </div>
+  {% endfor %}
+ 
+  {# On définit ce block, dans lequel vont venir s'insérer les autres vues du bundle #}
+  {% block fos_user_content %}
+  {% endblock fos_user_content %}
+ 
+{% endblock %}
+
+{% block js_add %}
+<<script>
+
+$(function() {
+	
+		$('#cubeMove').click(function(e) 
+		{
+			e.preventDefault();
+		    $('#cube').css("-webkit-transform","rotateX(0deg) rotateY(-90deg)");
+		    $('#cube').css("-moz-transform","rotateX(0deg) rotateY(-90deg)");
+			
+		});
+
+	
+/***************************** ANIMATION DJIP HOVER ***************************************/
+	$('.djip-background').hide();
+	$('.djip').hover(function(){
+		
+		$(this).children('.djip-background').slideToggle();
+		$(this).children('.djip-top').slideToggle();
+		$(this).children('.djip-bottom').slideToggle();
+		
+		});
+				
+			
+
+/****************************** APPEL DU DJIP EN AJAX *******************************************/
+
+
+
+	//Lorsque vous cliquez sur un lien de la classe poplight et que le href commence par #
+	$('.djip').click(function() {
+
+		var popID = 'djip-box'; //Trouver la pop-up correspondante
+		var popURL = 'poplight'; //Retrouver la largeur dans le href
+
+		/*Récupérer les variables depuis le lien
+		var query= popURL.split('?');
+		var dim= query[1].split('&amp;');
+		var popWidth = dim[0].split('=')[1]; //La première valeur du lien*/
+
+		//Faire apparaitre la pop-up et ajouter le bouton de fermeture
+		$('#' + popID).fadeIn().css({
+			'width': 900,
+			'z-index' : 100
+		})
+		
+
+		//Récupération du margin, qui permettra de centrer la fenêtre - on ajuste de 80px en conformité avec le CSS
+		var popMargTop = ($('#' + popID).height() + 80) / 2;
+		var popMargLeft = ($('#' + popID).width() + 80) / 2;
+
+
+		
+		//On affecte le margin
+		$('#' + popID).css({
+			'margin-top' : -popMargTop,
+			'margin-left' : -popMargLeft,
+			
+			
+		});
+
+		//Effet box-shadow selon le thème de l'article
+	
+		//Effet fade-in du fond opaque
+		$('body').append('<div id="fade"></div>'); //Ajout du fond opaque noir
+		//Apparition du fond - .css({'filter' : 'alpha(opacity=80)'}) pour corriger les bogues de IE
+		$('#fade').css({'filter' : 'alpha(opacity=80)'}).fadeIn();
+		var id = $(this).attr('id');
+		var DATA = 'id='+id;
+		$.ajax({
+	        type: "POST",
+	        url: "{{ path('sd_a_core_djip')}}",
+	        data: DATA,
+	        cache: false,
+	        success: function(data){
+	           $('#djip-box').html(data).prepend('<a href="#" class="close"><img src="{{ asset('img/close_pop.png') }}" class="btn_close" title="Fermer" alt="Fermer" /></a>');
+	           //$('#djip-box').slideToggle('fast');
+	           //$(".loading").hide();
+	        }
+	    });
+
+		
+		return false;
+	});
+
+
+	$( document ).on( "click", 'a.close, #fade', function() {
+		$('#fade , .popup_block').fadeOut(function() {
+			$('#fade, a.close').remove();  //...ils disparaissent ensemble
+		});
+		$('#djip-box').html("");
+		return false;
+		});
+});
+</script>
+{% endblock %}

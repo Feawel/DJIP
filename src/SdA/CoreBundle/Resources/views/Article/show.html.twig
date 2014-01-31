@@ -1,0 +1,37 @@
+{% extends '::layout.html.twig' %}
+
+{% block body -%}
+ 
+<div style="width:800px;margin: auto;">
+   
+    
+    <h1 style="text-align:center">{{ entity.titre }}</h1>
+    
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Date</th>
+                <td>{{ entity.date|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Résumé</th>
+                <td>{{ entity.abstract }}</td>
+            </tr>
+            <tr>
+                <th>Contenu</th>
+                <td>{{ entity.contenu }}</td>
+            </tr>
+            <tr>
+                <th>Date de dernière édition</th>
+                <td>{{ entity.dateEdition|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+        <a class="btn btn-primary" style="float: left;margin-right: 15px;" href="{{ path('article_edit', { 'slug': entity.slug }) }}">
+            Editer
+        </a>
+        {{ form(delete_form) }}
+</div>
+{% endblock %}

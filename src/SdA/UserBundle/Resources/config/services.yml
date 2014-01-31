@@ -1,0 +1,13 @@
+parameters:
+#    sd_a_user.example.class: SdA\UserBundle\Example
+
+#    sd_a_user.example:
+#        class: %sd_a_user.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+services:
+    sda_user.profile.form.type:
+        class: SdA\UserBundle\Form\Type\ProfileFormType
+        arguments: [%fos_user.model.user.class%]
+        tags:
+            - { name: form.type, alias: sda_user_profile }

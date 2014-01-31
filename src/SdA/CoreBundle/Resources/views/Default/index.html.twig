@@ -1,0 +1,136 @@
+{% extends "::layout.html.twig" %}
+
+{#
+{% block htmlBackground %}style="background: url('{{ asset("css/img/backgrounds/background-newsfeed.jpg") }}') no-repeat; background-attachment:fixed" {% endblock htmlBackground %}
+{% block bodyBackground %}style="background: url('{{ asset("css/img/backgrounds/background-newsfeed.jpg") }}') no-repeat; background-attachment:fixed" {% endblock bodyBackground %}#}
+
+{% block layout %}id="layout" {% endblock layout %}
+{% block logoDjip %}{% endblock logoDjip %}
+{% block body %}
+<nav id="menu" style="width:200px;">
+  	<div  class="pure-menu pure-menu-open pure-hidden-phone">
+            <a style="position:relative;right:6px;" class="pure-menu" href="{{ path('sd_a_core_homepage') }}"><img style="width:100%" alt="Logo de DJIP" src="{{ asset('img/logo_djip.png') }}"></a>
+
+            <ul>
+				<li><a id="dashboard-nav-hot" class="icon icon-data" href="{{ path('sd_a_core_homepage') }}">Hot Djips</a></li>
+				<li><a id="dashboard-nav-myDjips" class="icon icon-location" href="{{path('sd_a_core_categorie', {'categorie' : 'myDjips'}) }}">My Djips</a></li>
+				<li ><a id="dashboard-nav-sport" class="icon icon-study cat-menu"  data="sport" href="{{ path('sd_a_core_categorie', {'categorie' : 'Sport'}) }}">Sport</a></li>
+				<li ><a id="dashboard-nav-politique" class="icon icon-photo cat-menu" data="politique" href="{{ path('sd_a_core_categorie', {'categorie' : 'Politique'}) }}">Politique</a></li>
+				<li ><a id="dashboard-nav-international" class="icon icon-wallet cat-menu" data="international" href="{{ path('sd_a_core_categorie', {'categorie' : 'International'}) }}">International</a></li>
+				<li ><a id="dashboard-nav-science" class="icon icon-photo cat-menu" data="science" href="{{ path('sd_a_core_categorie', {'categorie' : 'ScienceEtTechnologie'}) }}">Science et Technologie</a></li>
+				<li ><a id="dashboard-nav-culture" class="icon icon-wallet cat-menu" data="culture" href="{{ path('sd_a_core_categorie', {'categorie' : 'Culture'}) }}">Culture</a></li>
+				<li ><a id="dashboard-nav-economie" class="icon icon-wallet cat-menu" data="economie" href="{{ path('sd_a_core_categorie', {'categorie' : 'Economie'}) }}">Economie</a></li>
+
+                <li class=" menu-item-divided">
+                    <a class="icon icon-lab">Créer l'actualité</a>
+                </li>
+                <li><a class="icon icon-data" href="#">Créer un Djip</a></li>
+				<li><a class="icon icon-location" href="#">Modifier un Djip</a></li>
+				
+				<li class="menu-item-divided">
+                    <a class="icon icon-data" href="#">About</a>
+                </li>
+
+            </ul>
+        </div>
+        </nav>
+
+
+			<ul class="grid effect-6 " id="grid" style="margin-left:60px;">
+			{% for article in articles %}
+				<li class="djip " id ="{{ article.id }}" style="width:300px;height:300px;opacity:0.88" >
+					<div class="djip-top" style="background-color:{{article.categories.first.color}}; ">
+						<span class="djip-top-text">Explications et origines :	{{ article.titre }}</span>
+					</div>
+					<div  class="djip-bottom" style="color:{{article.categories.first.color}}">
+						Par <span style="font-weight:bold">{{ article.auteur }}</span>
+					</div>
+					<div class="djip-background" style="background-color:{{ article.categories.first.color }};"> 
+						<span class="djip-background-text">{{ article.contenu |  truncate(180, true, '[...]') | raw }} </span>
+					</div>
+				</li>
+			{% endfor %}
+			</ul>
+{% endblock %}
+
+{% block js_add %} 
+<script>
+
+$(function() {
+	
+/***************************** COLORATION MENUS CATEGORIES ***************************************/
+$('.cat-menu').mouseover(function(){
+	var cat = $(this).attr('data');
+	if(cat == 'politique')
+		$(this).css("color", "{{ categories[0].color }}");
+	else if(cat == 'international')
+		$(this).css("color", "{{ categories[1].color }}");
+	else if(cat == 'culture')
+		$(this).css("color", "{{ categories[2].color }}");
+	else if(cat == 'sport')
+		$(this).css("color", "{{ categories[3].color }}");
+	else if(cat == 'science')
+		$(this).css("color", "{{ categories[4].color }}");
+	else if(cat == 'economie')
+		$(this).css("color", "{{ categories[5].color }}");
+});
+
+$('.cat-menu').mouseout(function(){
+	$(this).css("color","grey");
+});
+
+{% if (menuSelected == 'hot') %}
+$('#dashboard-nav-hot').addClass('pure-menu-selected');
+$('#dashboard-nav-hot').css('color', 'white');
+$('#dashboard-nav-hot').mouseout(function(){
+	$(this).css('color','white');
+});
+{% elseif (menuSelected == 'myDjips') %}
+$('#dashboard-nav-myDjips').addClass('pure-menu-selected');
+$('#dashboard-nav-myDjips').css('color', 'white');
+$('#dashboard-nav-myDjips').mouseout(function(){
+	$(this).css('color','white');
+});
+{% elseif (menuSelected == 'Politique') %}
+$('#dashboard-nav-politique').addClass('pure-menu-selected');
+$('#dashboard-nav-politique').css('color', 'white');
+$('#dashboard-nav-politique').mouseout(function(){
+	$(this).css('color','white');
+});
+{% elseif (menuSelected == 'International') %}
+$('#dashboard-nav-international').addClass('pure-menu-selected');
+$('#dashboard-nav-international').css('color', 'white');
+$('#dashboard-nav-international').mouseout(function(){
+	$(this).css('color','white');
+});
+{% elseif (menuSelected == 'Culture') %}
+$('#dashboard-nav-culture').addClass('pure-menu-selected');
+$('#dashboard-nav-culture').css('color', 'white');
+$('#dashboard-nav-culture').mouseout(function(){
+	$(this).css('color','white');
+});
+{% elseif (menuSelected == 'Sport') %}
+$('#dashboard-nav-sport').addClass('pure-menu-selected');
+$('#dashboard-nav-sport').css('color', 'white');
+$('#dashboard-nav-sport').mouseout(function(){
+	$(this).css('color','white');
+});
+{% elseif (menuSelected == 'ScienceEtTechnologie') %}
+$('#dashboard-nav-science').addClass('pure-menu-selected');
+$('#dashboard-nav-science').css('color', 'white');
+$('#dashboard-nav-science').mouseout(function(){
+	$(this).css('color','white');
+});
+{% elseif (menuSelected == 'Economie') %}
+$('#dashboard-nav-economie').addClass('pure-menu-selected');
+$('#dashboard-nav-economie').css('color', 'white');
+$('#dashboard-nav-economie').mouseout(function(){
+	$(this).css('color','white');
+});
+{% endif %}
+
+	
+
+});
+</script>
+{% endblock %}

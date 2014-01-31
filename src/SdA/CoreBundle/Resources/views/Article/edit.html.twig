@@ -1,0 +1,50 @@
+{% extends '::layout.html.twig' %}
+
+{% block body -%}
+<div style="width:800px;margin: auto;">
+{{ form_start(edit_form, { 'attr': {'class': 'pure-form pure-form-stacked'}}) }}
+   
+        <fieldset>
+        <legend style="text-align:center">EDITER MON DJIP</legend>
+
+	    <div>
+	        {{ form_label(edit_form.titre) }}
+	        {{ form_errors(edit_form.titre) }}
+	        {{ form_widget(edit_form.titre, { 'attr': {'style': 'width:200px'} }) }}
+	    </div>
+	
+	    <div>
+	        {{ form_label(edit_form.abstract) }}
+	        {{ form_errors(edit_form.abstract) }}
+	        {{ form_widget(edit_form.abstract, { 'attr': {'style': 'width:200px'} }) }}
+	    </div>
+	
+	    <div>
+	        {{ form_label(edit_form.contenu) }}
+	        {{ form_errors(edit_form.contenu) }}
+	        {{ form_widget(edit_form.contenu, { 'attr': {'style': 'width:200px'} }) }}
+	    </div>
+	    
+	    <div>
+	        {{ form_label(edit_form.categories) }}
+	        {{ form_errors(edit_form.categories) }}
+	        {{ form_widget(edit_form.categories, { 'attr': {'style': 'width:200px'} }) }}
+	    </div><br>
+
+
+    
+{{ form_end(edit_form) }}
+ 	<div>
+        <input style="float:left;margin-right:10px;" type="submit" value="Enregistrer mes changements" class="btn btn-success" />
+        <a href="#" style="float: left;margin-right:10px;" class="btn btn-primary">Ajouter un NewsLink</a>
+        {{ form(delete_form) }}
+    </div>
+
+    </fieldset>
+   
+</form>
+
+</div>
+
+{{ tinymce_init() }}
+{% endblock %}

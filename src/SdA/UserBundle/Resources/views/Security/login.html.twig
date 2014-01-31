@@ -1,0 +1,68 @@
+{% extends "::layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block body %}
+{% if error %}
+    <div>{{ error|trans }}</div>
+{% endif %}
+
+<div id="form-container" style="margin-left:33%;	background-color:#F9F9F9;
+	padding: 20px;
+	box-shadow: 0px 0px 40px #87E3E7;
+	border: 20px solid #ddd;
+	height:400px;width:33%;
+	/*--Les différentes définitions de Box Shadow en CSS3--*/
+	-webkit-box-shadow: 0px 0px 20px #000;
+	-moz-box-shadow: 0px 0px 20px #000;
+	
+	/*--Coins arrondis en CSS3--*/
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;">
+<form id="login-form"  class="pure-form pure-form-stacked" action="{{ path("fos_user_security_check") }}" method="post">
+    <fieldset>
+        <legend>LOGIN</legend>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+
+    <label for="username">{{ 'security.login.username'|trans }}</label>
+    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+
+    <label for="password">{{ 'security.login.password'|trans }}</label>
+    <input type="password" id="password" name="_password" required="required" />
+
+   
+    <label for="remember_me" class="pure-checkbox">
+             <input type="checkbox" id="remember_me" name="_remember_me" value="on" /> {{ 'security.login.remember_me'|trans }}
+    </label>
+
+    
+    <input class="btn btn-primary" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+    
+    <br><br><span>Pas encore de compte ? <a id="go-to-register-form" href="#">Inscrivez vous !</a></span>
+    
+    </fieldset>
+</form>
+
+
+
+</div>
+
+{% endblock body %}
+
+{% block js_add %}
+<script>
+
+$(function() {
+	$('#go-to-register-form').click(function() {
+
+		$('#login-form').fadeOut();
+		$( "#form-container" ).load( "{{ path('fos_user_registration_register') }} #register-form" );
+		
+		return false;
+	});
+
+
+});
+</script>
+{% endblock js_add %}

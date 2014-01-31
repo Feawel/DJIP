@@ -1,0 +1,38 @@
+{% extends '::layout.html.twig' %}
+
+{% block body %}
+    <h1>Newslink list</h1>
+
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Titre</th>
+                <th>URL</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('newslink_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.titre }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('newslink_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('newslink_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>    
+        </li>
+    </ul>
+    {% endblock %}

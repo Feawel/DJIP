@@ -1,0 +1,18 @@
+{{ form_start(form, { 'attr': {'class': 'pure-form', 'id': 'form-newslink'}}) }}
+    <fieldset>
+        
+ 
+    <div>
+        {{ form_errors(form.titre) }}
+        {{ form_widget(form.titre, { 'attr': { 'placeholder': 'titre de la news', 'style':'float:left;margin:5px'} }) }}
+    </div>
+
+    <div>
+        {{ form_errors(form.url) }}
+        {{ form_widget(form.url, { 'attr': { 'placeholder': 'lien vers la news', 'style':'float:left;margin:5px'} }) }}
+    </div>
+     
+{{ form_end(form) }}
+    
+    </fieldset>
+</form>

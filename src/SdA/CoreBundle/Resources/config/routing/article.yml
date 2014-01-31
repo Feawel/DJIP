@@ -1,0 +1,34 @@
+article:
+    pattern:  /
+    defaults: { _controller: "SdACoreBundle:Article:index" }
+
+article_show:
+    pattern:  /show/{slug}
+    defaults: { _controller: "SdACoreBundle:Article:show" }
+
+article_new:
+    pattern:  /new
+    defaults: { _controller: "SdACoreBundle:Article:new" }
+
+article_create:
+    pattern:  /create
+    defaults: { _controller: "SdACoreBundle:Article:create" }
+    requirements: { _method: post }
+
+article_edit:
+    pattern:  /edit/{slug}
+    defaults: { _controller: "SdACoreBundle:Article:edit" }
+
+article_update:
+    pattern:  /update/{slug}
+    defaults: { _controller: "SdACoreBundle:Article:update" }
+    requirements: { _method: post|put }
+
+article_delete:
+    pattern:  /delete/{slug}
+    defaults: { _controller: "SdACoreBundle:Article:delete" }
+    requirements: { _method: post|delete }
+
+article_add_newslink:
+    pattern:   /newslink/add/{slug}
+    defaults:  { _controller: "SdACoreBundle:Article:addNewslink" }

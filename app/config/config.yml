@@ -1,0 +1,216 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: @SdACoreBundle/Resources/config/admin.yml }
+    - { resource: @SdAUserBundle/Resources/config/admin.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: %locale% }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_proxies: ~
+    session:         ~
+    fragments:       ~
+    http_method_override: true
+
+#SONATA BLOCK
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+
+        #sonata.admin_doctrine_orm.block.audit:
+        #    contexts:   [admin]
+
+        sonata.block.service.text:
+        sonata.block.service.rss:
+
+        # Some specific block from the SonataMediaBundle
+        #sonata.media.block.media:
+        #sonata.media.block.gallery:
+        #sonata.media.block.feature_media:
+
+
+#SONATA MEDIA
+sonata_media:
+    # if you don't use default namespace configuration
+    #class:
+    #    media: MyVendor\MediaBundle\Entity\Media
+    #    gallery: MyVendor\MediaBundle\Entity\Gallery
+    #    gallery_has_media: MyVendor\MediaBundle\Entity\GalleryHasMedia
+    default_context: default
+    db_driver: doctrine_orm # or doctrine_mongodb, doctrine_phpcr
+    contexts:
+        default:  # the default context is mandatory
+            providers:
+                - sonata.media.provider.dailymotion
+                - sonata.media.provider.youtube
+                - sonata.media.provider.image
+                - sonata.media.provider.file
+
+            formats:
+                xsmall: { width: 40 , quality: 70}
+                small: { width: 100 , quality: 70}
+                profile:   { width: 300 , quality: 70}
+                cover:   { width: 1000 , quality: 90}
+                big:   { width: 500 , quality: 70}
+
+    cdn:
+        server:
+            path: /WikiActu/web/uploads/media # http://media.sonata-project.org/
+
+    filesystem:
+        local:
+            directory:  %kernel.root_dir%/../web/uploads/media
+            create:     false
+    providers:
+        image:
+            resizer: sonata.media.resizer.square
+
+#SONATA ADMIN
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # Enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts:   [admin]
+        # Your other blocks
+
+#SONATA SEO
+sonata_seo:
+    default:          sonata.seo.page.default
+    encoding:         UTF-8
+    page:
+        title:            Djip - l'info dans tous les sens
+        metas:
+            name:
+                keywords:             foo bar
+                description:          Djip est un site d'actualité communautaire d'un nouveau genre, qui permet aux utilisateurs connaisseurs d'un domaine particulier de partager leur savoir sur une actualité de façon claire et concise. L'objectif est de comprendre le commencement de chaque situation qui nous intéresse dans la profusion d'information que l'on reçoit chaque jour.
+                robots:               index, follow
+
+            property:
+                # Facebook application settings
+                #'fb:app_id':          XXXXXX
+                #'fb:admins':          admin1, admin2
+
+                # Open Graph information
+                # see http://developers.facebook.com/docs/opengraphprotocol/#types or http://ogp.me/
+                'og:site_name':       Djip - l'info dans tous les sens
+                'og:description':     Captez l'info qu'il vous faut
+
+            http-equiv:
+                'Content-Type':         text/html; charset=utf-8
+                #'X-Ua-Compatible':      IE=EmulateIE7
+
+        head:
+            'xmlns':              http://www.w3.org/1999/xhtml
+            'xmlns:og':           http://opengraphprotocol.org/schema/
+            #'xmlns:fb':           "http://www.facebook.com/2008/fbml"
+
+#FOSComment
+fos_comment:
+    db_driver: orm
+    class:
+        model:
+            comment: SdA\CoreBundle\Entity\Comment
+            thread: SdA\CoreBundle\Entity\Article
+            vote: SdA\CoreBundle\Entity\Vote
+
+#Stfalcon TINYMCE
+stfalcon_tinymce:
+        include_jquery: true
+        tinymce_jquery: true
+        language: %locale%
+        theme:
+            simple:
+                theme: "modern"
+
+
+# FOSUser
+fos_user:
+    db_driver:     orm                        # Le type de BDD à utiliser, nous utilisons l'ORM Doctrine depuis le début
+    firewall_name: main                       # Le nom du firewall derrière lequel on utilisera ces utilisateurs
+    user_class:    SdA\UserBundle\Entity\User # La classe de l'entité User que nous utilisons
+    profile:
+        form:
+            type: sda_user_profile
+
+# Stof\DoctrineExtensionBundle configuration
+stof_doctrine_extensions:
+    orm:
+        default:
+            sluggable: true
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+    form:
+        resources:
+            # other files
+            - 'SonataMediaBundle:Form:media_widgets.html.twig'
+
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:        [ "FOSCommentBundle" ]
+    #java: /usr/bin/java
+    filters:
+        less:
+            node:       /usr/local/bin/node
+            node_paths: [/usr/local/lib/node_modules]
+            apply_to:   "\.less$"
+        cssrewrite: ~
+        yui_js:
+            jar: %kernel.root_dir%/Resources/java/yuicompressor.jar
+        yui_css:
+            jar: %kernel.root_dir%/Resources/java/yuicompressor.jar
+        #closure:
+        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
+        #yui_css:
+        #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver, add the path in parameters.yml
+        # e.g. database_path: %kernel.root_dir%/data/data.db3
+        # path:     %database_path%
+        types:
+            json: Sonata\Doctrine\Types\JsonType
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        entity_managers:
+            default:
+                auto_mapping: true
+                mappings:
+                    ApplicationSonataMediaBundle: ~
+                    SonataMediaBundle: ~
+        
+# Swiftmailer Configuration
+swiftmailer:
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+    spool:     { type: memory }

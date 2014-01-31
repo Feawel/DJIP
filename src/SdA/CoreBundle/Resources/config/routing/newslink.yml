@@ -1,0 +1,30 @@
+newslink:
+    pattern:  /
+    defaults: { _controller: "SdACoreBundle:Newslink:index" }
+
+newslink_show:
+    pattern:  /show/{id}
+    defaults: { _controller: "SdACoreBundle:Newslink:show" }
+
+newslink_new:
+    pattern:  /new/
+    defaults: { _controller: "SdACoreBundle:Newslink:new" }
+
+newslink_create:
+    pattern:  /create
+    defaults: { _controller: "SdACoreBundle:Newslink:create" }
+    requirements: { _method: post }
+
+newslink_edit:
+    pattern:  /edit/{id}
+    defaults: { _controller: "SdACoreBundle:Newslink:edit" }
+
+newslink_update:
+    pattern:  /update/{id}
+    defaults: { _controller: "SdACoreBundle:Newslink:update" }
+    requirements: { _method: post|put }
+
+newslink_delete:
+    pattern:  /delete/{id}
+    defaults: { _controller: "SdACoreBundle:Newslink:delete" }
+    requirements: { _method: post|delete }

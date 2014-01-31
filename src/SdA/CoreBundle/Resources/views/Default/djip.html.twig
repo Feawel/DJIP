@@ -1,0 +1,204 @@
+<div class="djip-ext" style="overflow-y:auto;overflow-x:hidden;height:650px;background-color:#F9F9F9;">
+	<div class="djip-inner" id="{{ article.id }}" style="">
+		<header class="djip-header" style="padding:20px">
+			<div style="text-align:left">{% if isAuteur %}<a href="{{ path('article_edit', {'slug' : article.slug})}}" class="btn btn-info">Editer</a>{% endif %}</div>
+			<div style="text-align:right"><img class="circular" alt="Author picture" src="{% path article.auteur.profilePicture, 'small' %}" /></div>
+			<div style="text-align:right;color:rgb(88,87,89)" class="djip-auteur">Par <a href="#">{{ article.auteur }}</a></div>	
+			<h1 style="text-align:center;color:{{ article.categories.first.color }}" id="djip-title" class="djip-title">{{ article.titre }}</h1>
+			<div style="text-align:center">
+				<button id="followDjip" href="#" data-container="body" data-toggle="popover" data-placement="left" data-content="Veuillez vous identifier pour pouvoir suivre un DJIP ! ;)"  data-original-title="Oops !!" title="" {% if (isFollower) %}style="display:none"{% endif %} class="btn btn-primary ">Suivre ce DJIP</button>
+				<a id="followDjipSuccess" href="#" {% if (isFollower == false) %}style="display:none"{% endif %} class="btn btn-success active">DJIP Suivi !</a>
+			</div>
+			<div style="" class="djip-date">Publié le <strong>{{ article.date | date('d-m-Y') }}</strong></div>
+			
+		</header>
+		<article style="text-align:justify;color:rgb(88,87,89);padding:20px;color:#9832EV " class="djip-content">
+		
+			<p>{{ article.contenu | raw }} <br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pellentesque metus id magna aliquet tempus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam tincidunt erat nunc, ac semper nisi vehicula vel. Suspendisse venenatis, diam nec gravida sagittis, odio est lacinia lorem, nec mattis augue dui in arcu. Duis purus mi, cursus eleifend laoreet vel, dignissim nec turpis. Nam elementum sit amet magna nec aliquet. Nam vitae urna viverra, congue massa id, imperdiet ante. Phasellus nunc libero, cursus quis lacus non, scelerisque bibendum mauris. <br><br>Nunc viverra aliquam consectetur. Fusce sit amet dui at orci ultrices cursus. Quisque quis dolor euismod, bibendum tortor quis, commodo turpis. Sed eu vehicula augue, nec viverra eros. Integer tempor mattis nisl eu sagittis. Curabitur posuere lorem sed pretium dapibus. Etiam est est, vestibulum vel mi ac, eleifend gravida augue. Nunc suscipit urna id adipiscing consectetur.<br><br>
+
+			</p>
+			{% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': article.id} %}
+		</article>
+		<footer style="width:860px;" class="djip-footer">
+			<div class="newslink" style="width:100%;height:50px;background-color:{{ article.categories.first.color }}">
+			<a id="add-newslink" href="#">+ ajouter un newslink</a>
+			<div style="display:none" id="add-newslink-form">{{ render(controller('SdACoreBundle:Newslink:new', { 'idArticle': article.id })) }}</div>
+			</div>
+			
+			<div style="width:100%;height:50px;">
+			</div>
+			{% for newslink in newslinks %}
+			<div style="width:100%;height:50px;background-color:{{ article.categories.first.color }}">
+				{{ render(controller('SdACoreBundle:Newslink:show', { 'id': newslink.id }))  }}
+			</div>
+			<div style="width:100%;height:50px;">
+			</div>
+			{% endfor %}
+			
+		</footer>
+</div>
+</div>
+
+<script>
+$(function() {
+
+/*************************** FORMATAGE COMMENTAIRES *********************************/
+$(document)
+    .on('fos_comment_load_thread', function (event, identifier) {
+    $('.fos_comment_submit > input').addClass('btn btn-primary');
+	$('.fos_comment_submit').css('margin-top', '10px;');
+	$('.fos_comment_comment_new_form').addClass('pure-form pure-form-stacked');
+	$('.fos_comment_comment_vote:first-child').addClass('btn btn-success');
+	$('.fos_comment_comment_vote:nth-child(2)').addClass('btn btn-warning');
+	$('.fos_comment_comment_reply').hide();
+})
+
+$(document)
+    .on('fos_comment_submitted_form', function (event, statusCode) {
+		$('.fos_comment_comment_vote:first-child').addClass('btn btn-success');
+		$('.fos_comment_comment_vote:nth-child(2)').addClass('btn btn-warning');
+		$('.fos_comment_comment_reply').hide();
+})
+
+/*************************** ANIMATION ET AJAX : SUIVRE / NE PLUS SUIVRE UN DJIP *********************************/
+	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+	$('#followDjip').click(function(){
+		var id = $('.djip-inner').attr('id');
+		var DATA = 'id='+id;
+		$.ajax({
+	        type: "POST",
+	        url: "{{ path('sda_user_add_followed_djip')}}",
+	        data: DATA,
+	        cache: false,
+	        success: function(data){
+				$('#followDjip').fadeOut();
+				$('#followDjipSuccess').delay(360).fadeIn();
+	        }
+	    }); 
+	    
+	});
+	{% else %}
+	$('#followDjip').popover();
+	{% endif %}
+
+	$('#followDjipSuccess').on('click', function(){
+
+		
+		var id = $('.djip-inner').attr('id');
+		var DATA = 'id='+id;
+		$.ajax({
+	        type: "POST",
+	        url: "{{ path('sda_user_remove_followed_djip')}}",
+	        data: DATA,
+	        cache: false,
+	        success: function(data){
+	        	$('#followDjipSuccess').fadeOut();
+				$('#followDjip').delay(360).fadeIn();
+	        }
+	    });
+	    
+	});
+
+/*************************** AJOUTER UN NEWSLINK *********************************/
+	$('#add-newslink').on('click', function(){
+		
+		$(this).fadeOut();
+		$('#add-newslink-form').delay(250).fadeIn();
+		$('.newslink').css('opacity','1');
+		
+		// var id = $('.djip-inner').attr('id');
+		// var DATA = 'idArticle='+id;
+		// $.ajax({
+	 //        type: "POST",
+	 //        url: "{{ path('newslink_new', {'idArticle' : article.id})}}",
+	 //        data: DATA,
+	 //        cache: false,
+	 //        success: function(data){
+	 //        	$('.newslink').html(data);
+	 //        	$('.newslink').css('opacity','1');
+	 //        }
+	 //    });
+	    
+	});
+	
+	var $form = $('#form-newslink');
+	
+	$('#sda_corebundle_newslink_submit').on('click', function() {
+		$form.trigger('submit');
+		return false;
+	});
+
+
+	$form.on('submit', function() {
+		var titre = $('#sda_corebundle_newslink_titre').val();
+		var url = $('#sda_corebundle_newslink_url').val();
+		var idArticle = $('.djip-inner').attr('id');
+		
+		$.ajax({
+			type: $(this).attr('method'),
+	        url: $(this).attr('action'),
+	        data: { idArticle : idArticle, titre : titre, url : url },
+	        cache: false,
+	        success: function(data){
+	        	$('#NewNewslink').attr('id','');
+	        	$("footer").prepend("<div style='width:100%;height:50px;'></div>")
+	        	$( ".newslink" ).clone().prependTo( "footer" ).attr('id','NewNewslink');
+	        	$('#NewNewslink').removeClass('newslink');
+	        	$('.newslink').html(data).removeClass('newslink');
+	        	$('#NewNewslink').addClass('newslink');
+	        	$('#add-newslink').show();
+	        	$('#add-newslink-form').hide();
+	        	$('#add-newslink').on('click', function(){
+					$(this).fadeOut();
+					$('#add-newslink-form').delay(250).fadeIn();
+					$('.newslink').css('opacity','1');
+				});
+
+				var $form = $('#form-newslink');
+				
+				$('#sda_corebundle_newslink_submit').on('click', function() {
+					$form.trigger('submit');
+					return false;
+				});
+				$form.on('submit', function() {
+					var titre = $('#sda_corebundle_newslink_titre').val();
+					var url = $('#sda_corebundle_newslink_url').val();
+					var idArticle = $('.djip-inner').attr('id');
+					
+					$.ajax({
+						type: $(this).attr('method'),
+				        url: $(this).attr('action'),
+				        data: { idArticle : idArticle, titre : titre, url : url },
+				        cache: false,
+				        success: function(data){
+				        	$('#NewNewslink').attr('id','');
+				        	$("footer").prepend("<div style='width:100%;height:50px;'></div>")
+				        	$( ".newslink" ).clone().prependTo( "footer" ).attr('id','NewNewslink');
+				        	$('#NewNewslink').removeClass('newslink');
+				        	$('.newslink').html(data).removeClass('newslink');
+				        	$('#NewNewslink').addClass('newslink');        	
+				        	$('#add-newslink').show();
+				        	$('#add-newslink-form').hide();
+				        	$('#add-newslink').on('click', function(){
+								$(this).fadeOut();
+								$('#add-newslink-form').delay(250).fadeIn();
+								$('.newslink').css('opacity','1');
+							});
+				        	
+				        	
+				        }
+					});
+
+					return false;
+				});
+	        	
+	        }
+		});
+
+		return false;
+	});
+
+
+});
+
+</script>

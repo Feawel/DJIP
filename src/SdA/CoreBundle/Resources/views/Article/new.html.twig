@@ -1,0 +1,43 @@
+
+
+    {% trans_default_domain 'FOSUserBundle' %}
+
+<form id="new-djip-form"  action="{{ path('article_create') }}" {{ form_enctype(form) }} method="POST"  class=" pure-form pure-form-aligned ">
+    <fieldset>
+        <legend style="text-align:center">CREER UN DJIP</legend>
+ 
+    <div class="pure-control-group">
+        {{ form_label(form.titre) }}
+        {{ form_errors(form.titre) }}
+        {{ form_widget(form.titre, { 'attr': {'style': 'width:200px'} }) }}
+    </div>
+
+    <div class="pure-control-group">
+        {{ form_label(form.abstract) }}
+        {{ form_errors(form.abstract) }}
+        {{ form_widget(form.abstract, { 'attr': {'style': 'width:200px'} }) }}
+    </div>
+
+        <div class="pure-control-group">
+        {{ form_label(form.contenu) }}
+        {{ form_errors(form.contenu) }}
+        {{ form_widget(form.contenu, { 'attr': {'style': 'width:200px'} }) }}
+    </div>
+
+    <div class="pure-control-group" required="true">
+        {{ form_label(form.categories) }}
+        {{ form_errors(form.categories) }}
+        {{ form_widget(form.categories, { 'attr': {'style': 'width:200px', 'required' : 'true'} }) }}
+    </div><br>
+
+    
+{{ form_end(form) }}
+
+    
+   
+    
+
+    
+    </fieldset>
+</form>
+

@@ -1,0 +1,19 @@
+sda_user_djip_show:
+    pattern:  /my-djips
+    defaults: { _controller: SdAUserBundle:User:myDjips }
+
+sda_user_follower_show:
+    pattern:  /my-followers
+    defaults: { _controller: SdAUserBundle:User:myFollowers }
+
+sda_user_favorite_show:
+    pattern:  /my-favorites
+    defaults: { _controller: SdAUserBundle:User:myFavorites }
+
+sda_user_add_followed_djip:
+    pattern:  /add-followed-djip
+    defaults: { _controller: SdACoreBundle:Core:addFollowedDjip }
+
+sda_user_remove_followed_djip:
+    pattern:  /remove-followed-djip
+    defaults: { _controller: SdACoreBundle:Core:removeFollowedDjip }

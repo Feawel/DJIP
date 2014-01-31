@@ -1,0 +1,35 @@
+sd_a_core_homepage:
+    pattern:  /
+    defaults: { _controller: SdACoreBundle:Core:index }
+
+SdACoreBundle_article:
+    resource: "@SdACoreBundle/Resources/config/routing/article.yml"
+    prefix:   /article
+
+SdACoreBundle_newslink:
+    resource: "@SdACoreBundle/Resources/config/routing/newslink.yml"
+    prefix:   /newslink
+
+sd_a_core_djip:
+    pattern:  /djip
+    defaults: { _controller: SdACoreBundle:Core:djip }
+    requirements:
+        _method: POST
+
+sd_a_core_djipDisplay:
+    pattern:  /djip-display/{id}
+    defaults: { _controller: SdACoreBundle:Core:djipDisplay }
+
+sd_a_core_categorie:
+    pattern:  /{categorie}
+    defaults: { _controller: SdACoreBundle:Core:indexCategorie }
+    requirements:
+        categorie: Politique|International|Sport|ScienceEtTechnologie|Culture|Economie|myDjips
+
+sd_a_core_updateDB:
+    pattern:  /updateDB
+    defaults: { _controller: SdACoreBundle:Core:createArticles }
+
+sd_a_core_comments:
+    pattern: /comments/{id}
+    defaults: { _controller: SdACoreBundle:Core:comments}

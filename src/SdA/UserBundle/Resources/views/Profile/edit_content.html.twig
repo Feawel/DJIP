@@ -1,0 +1,48 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST"   class=" pure-form pure-form-stacked ">
+    
+        <fieldset>
+        <legend style="text-align:center">EDITER MON PROFIL</legend>
+   	<div class="pure-g-r">
+	    <div class="pure-u-1-2">
+	        {{ form_label(form.username) }}
+	        {{ form_errors(form.username) }}
+	        {{ form_widget(form.username, { 'attr': {'style': 'width:200px'} }) }}
+	    </div>
+	
+	    <div class="pure-u-1-2">
+	        {{ form_label(form.profilePicture) }}
+	        {{ form_errors(form.profilePicture) }}
+	        {{ form_widget(form.profilePicture, { 'attr': {'style': 'width:200px'} }) }}
+	    </div>
+	
+	    <div class="pure-u-1-2">
+	        {{ form_label(form.email) }}
+	        {{ form_errors(form.email) }}
+	        {{ form_widget(form.email, { 'attr': {'style': 'width:200px'} }) }}
+	    </div>
+	    
+	    <div class="pure-u-1-2">
+	        {{ form_label(form.coverPicture) }}
+	        {{ form_errors(form.coverPicture) }}
+	        {{ form_widget(form.coverPicture, { 'attr': {'style': 'width:200px'} }) }}
+	    </div>
+	    
+	    <div class="pure-u-1-2">
+	        {{ form_label(form.current_password) }}
+	        {{ form_errors(form.current_password) }}
+	        {{ form_widget(form.current_password, { 'attr': {'style': 'width:200px'} }) }}
+	    </div><br>
+	</div>
+
+    
+{{ form_end(form) }}
+ 	<div>
+        <input type="submit" value="{{ 'profile.edit.submit'|trans }}" class="btn btn-primary" />
+    </div>
+
+    </fieldset>
+    
+   
+</form>

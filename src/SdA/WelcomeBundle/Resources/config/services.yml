@@ -1,0 +1,7 @@
+parameters:
+#    sd_a_welcome.example.class: SdA\WelcomeBundle\Example
+
+services:
+#    sd_a_welcome.example:
+#        class: %sd_a_welcome.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

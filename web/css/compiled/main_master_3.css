@@ -1,0 +1,83 @@
+@CHARSET "UTF-8";
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
+@font-face {
+	font-weight: normal;
+	font-style: normal;
+	font-family: 'codropsicons';
+	src:url('../../../fonts/codropsicons/codropsicons.eot');
+	src:url('../../../fonts/codropsicons/codropsicons.eot?#iefix') format('embedded-opentype'),
+		url('../../../fonts/codropsicons/codropsicons.woff') format('woff'),
+		url('../../../fonts/codropsicons/codropsicons.ttf') format('truetype'),
+		url('../../../fonts/codropsicons/codropsicons.svg#codropsicons') format('svg');
+}
+
+body{
+		background: #34495e;
+	color: #fff;
+	font-weight: 300;
+	font-family: 'Lato', Calibri, Arial, sans-serif;
+}
+
+
+
+.djip {
+  height:300px;
+  width:300px;
+  text-align:center; /* centrage horizontal */
+  cursor:pointer;
+
+}
+
+.djip-top {
+  height:50%;
+  line-height:150px;
+  text-align:center; /* centrage horizontal */
+  
+  color:white; 
+  font-size:28px; 
+  text-align:center;
+  line-height:150px;
+}
+
+.djip-top-text { 
+  width:200px; /* largeur zone de texte */
+  vertical-align:middle;
+  display:inline-block;
+  line-height:1.2; /* on rétablit le line-height */
+  text-align:left; /* ... et l'alignement du texte */
+}
+
+.djip-bottom { 
+  font-size:22px;
+  height:48%;
+  background-color:#F9F9F9; 
+
+  text-align:center;
+  line-height:150px;
+}
+
+.djip-background{
+	width:100%;
+	height:100%;
+	display:inline-block;
+	color:white; 
+    font-size:20px; 
+    text-align:center;
+    line-height:150px;
+
+}
+
+.djip-background-text{
+	width:200px; /* largeur zone de texte */
+  	vertical-align:middle;
+  	display:inline-block;
+  	line-height:1.2; /* on rétablit le line-height */
+  	text-align:left; /* ... et l'alignement du texte */
+}
+
+
+
+.caption:hover > div {
+    opacity: 0.3;
+}
+
